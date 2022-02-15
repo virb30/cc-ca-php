@@ -5,9 +5,9 @@ namespace App;
 final class OrderItem
 {
   public function __construct(
-    private int $idItem,
-    private float $price,
-    private int $quantity
+    public readonly int $idItem,
+    public readonly float $price,
+    public readonly int $quantity
   )
   { }
 
