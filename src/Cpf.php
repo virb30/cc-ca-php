@@ -7,6 +7,9 @@ use DomainException;
 
 final class Cpf
 {
+    const FACTOR_DIGIT_1 = 10;
+    const FACTOR_DIGIT_2 = 11;
+
     private string $cpf;
 
     public function __construct(string $cpf)
@@ -14,47 +17,53 @@ final class Cpf
         if(!$this->validate($cpf)) {
             throw new DomainException("Invalid CPF");
         }
-
         $this->cpf = $cpf;
     }
 
-    private function calculateVerifyingDigit(string $digits): int
-    {   
-        $multiplier = strlen($digits) + 1;
-        $digitsArray = str_split($digits);
-        $digitsMultiplied = array_map(
-            fn($digit, $key): int => ($multiplier - $key) * (int)$digit, 
-            $digitsArray, 
-            array_keys($digitsArray)
-        );
-        $sum = array_reduce($digitsMultiplied, fn($acc, $digit) => $acc + $digit, 0);
-        $rest = $sum % 11;
-        return ($rest < 2) ? 0 : 11 - $rest;
+    private function validate(string $cpf): bool
+    {
+        $cpf = $this->cleanCpf($cpf);
+        if(empty($cpf)) return false;
+        if(!$this->isValidLength($cpf)) return false;
+        if($this->allDigitsEqual($cpf)) return false;
+        $digit1 = $this->calculateVerifyingDigit($cpf, 10);
+        $digit2 = $this->calculateVerifyingDigit($cpf, 11); 
+        $calculatedDigits = $digit1.$digit2;  
+        $verifyingDigits = $this->extractVerifyingDigits($cpf);
+        return $verifyingDigits == $calculatedDigits;
     }
-    
-    private function normalize(string $cpf): string
+
+    private function cleanCpf(string $cpf): string
     {
         if(!is_string($cpf)) return '';
         return preg_replace('/\D/', '', $cpf);
     }
-    
-    private function validate(string $cpf): bool
+
+    private function isValidLength(string $cpf): bool
     {
-        $cpf = $this->normalize($cpf);
-        if(empty($cpf)) return false;
-        if(strlen($cpf) !== 11) return false;
-        
-        $allDigitsEqual = Arr::every(str_split($cpf), fn($value): bool => $value === $cpf[0]);
-        if($allDigitsEqual) return false;
+        return strlen($cpf) === 11;
+    }
+
+    private function allDigitsEqual(string $cpf): bool
+    {
+        $firstDigit = $cpf[0];
+        return Arr::every(str_split($cpf), fn($digit): bool => $digit === $firstDigit);
+    }
     
-        $firstVerifyingDigit = 0;
-        $secondVerifyingDigit = 0;  
-        list($firstNineDigits, $verifyingDigits) = str_split($cpf, 9);
-        $firstVerifyingDigit = $this->calculateVerifyingDigit($firstNineDigits);
-        $firstTenDigits = $firstNineDigits.$firstVerifyingDigit;
-        $secondVerifyingDigit = $this->calculateVerifyingDigit($firstTenDigits); 
-        $calculatedDigits = $firstVerifyingDigit.$secondVerifyingDigit;  
-        return $verifyingDigits == $calculatedDigits;
+    private function calculateVerifyingDigit(string $digits, int $factor): int
+    {   
+        $total = 0;
+        $digits = str_split($digits);
+        foreach ($digits as $digit) {
+            if ($factor > 1) $total += (int)$digit * $factor--;
+        }
+        $rest = $total % 11;
+        return ($rest < 2) ? 0 : 11 - $rest;
+    }
+    
+    private function extractVerifyingDigits(string $cpf): string
+    {
+        return substr($cpf, -2);
     }
 
     public function getCpf()
