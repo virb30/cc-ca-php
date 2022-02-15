@@ -25,4 +25,9 @@ class Coupon
   {
     return $this->percentage;
   }
+
+  public function __toString()
+  {
+    return $this->code;
+  }
 }
