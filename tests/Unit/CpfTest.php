@@ -19,6 +19,7 @@ class CpfTest extends TestCase
     $cpf = new Cpf("935.411.347-80");
 
     $this->assertInstanceOf(Cpf::class, $cpf);
+    $this->assertEquals("935.411.347-80", $cpf->getValue());
   }
 
   public function invalidCpfProvider(): array

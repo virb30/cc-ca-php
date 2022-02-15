@@ -10,14 +10,14 @@ final class Cpf
     const FACTOR_DIGIT_1 = 10;
     const FACTOR_DIGIT_2 = 11;
 
-    private string $cpf;
+    private string $value;
 
-    public function __construct(string $cpf)
+    public function __construct(string $value)
     {
-        if(!$this->validate($cpf)) {
+        if(!$this->validate($value)) {
             throw new DomainException("Invalid CPF");
         }
-        $this->cpf = $cpf;
+        $this->value = $value;
     }
 
     private function validate(string $cpf): bool
@@ -25,7 +25,7 @@ final class Cpf
         $cpf = $this->cleanCpf($cpf);
         if(empty($cpf)) return false;
         if(!$this->isValidLength($cpf)) return false;
-        if($this->allDigitsEqual($cpf)) return false;
+        if($this->hasAllDigitsEqual($cpf)) return false;
         $digit1 = $this->calculateVerifyingDigit($cpf, 10);
         $digit2 = $this->calculateVerifyingDigit($cpf, 11); 
         $calculatedDigits = $digit1.$digit2;  
@@ -44,7 +44,7 @@ final class Cpf
         return strlen($cpf) === 11;
     }
 
-    private function allDigitsEqual(string $cpf): bool
+    private function hasAllDigitsEqual(string $cpf): bool
     {
         $firstDigit = $cpf[0];
         return Arr::every(str_split($cpf), fn($digit): bool => $digit === $firstDigit);
@@ -66,8 +66,8 @@ final class Cpf
         return substr($cpf, -2);
     }
 
-    public function getCpf()
+    public function getValue()
     {
-        return $this->cpf;
+        return $this->value;
     }
 }

@@ -2,24 +2,32 @@
 
 namespace App;
 use App\Cpf;
-use InvalidArgumentException;
+use App\OrderItem;
+use App\Coupon;
 
 final class Order
 {
+  public Cpf $cpf;
+  /**
+   * @var Product[]
+   */
   private array $items = [];
-  private ?Cupom $cupom;
-  private Cpf $cpf;
+  private Coupon|null $coupon = null;
 
-  public function __construct(string $cpf, array $items = [], ?Cupom $cupom = null)
+  public function __construct(string $cpf)
   {
-    $this->cpf = new Cpf($cpf);
+    $this->cpf = new Cpf($cpf);    
+  }
 
-    if(empty($items)) {
-      throw new InvalidArgumentException("You must have at least one item");
-    }
+  public function addItem(Product $item, int $quantity)
+  {
+    $orderItem = new OrderItem($item->getId(), $item->getPrice(), $quantity);
+    array_push($this->items, $orderItem);
+  }
 
-    $this->items = $items;
-    $this->cupom = $cupom;
+  public function applyCoupon(Coupon $coupon)
+  {
+    $this->coupon = $coupon;
   }
 
   public function getItems()
@@ -32,18 +40,13 @@ final class Order
     $total = array_reduce(
       $this->items, 
       function ($acc, $item) {
-        return $acc + ($item->getPrice() * $item->getQuantity());
+        return $acc + $item->getTotal();
       }, 0);
 
-    if($this->cupom){
-      $total = $this->applyCupom($total);
+    if(!!$this->coupon){
+      $total -= $total * $this->coupon->getPercentage() / 100;
     }
 
     return $total;
-  }
-
-  private function applyCupom(float $total)
-  {
-    return $total - ($total * $this->cupom->getPercent() / 100);
   }
 }

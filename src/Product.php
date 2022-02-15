@@ -6,11 +6,16 @@ final class Product
 {
 
   public function __construct(
+    private int $id,
+    private string $category,
     private string $description, 
-    private float $price, 
-    private int $quantity = 1
+    private float $price
   ) {}
 
+  public function getId()
+  {
+    return $this->id;
+  }
 
   public function getPrice()
   {
