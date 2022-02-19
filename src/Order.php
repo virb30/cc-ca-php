@@ -43,7 +43,7 @@ final class Order
         return $acc + $item->getTotal();
       }, 0);
 
-    if(!!$this->coupon){
+    if(!!$this->coupon && !$this->coupon->isExpired()){
       $total -= $total * $this->coupon->getPercentage() / 100;
     }
 

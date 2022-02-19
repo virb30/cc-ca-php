@@ -42,4 +42,16 @@ class OrderTest extends TestCase
     $total = $order->getTotal();
     $this->assertEquals(90, $total);
   }
+
+  public function testShouldNotApplyDiscountIfCouponIsExpired()
+  {
+    $expireDate = new DateTime('-1 days');
+    $order = new Order("935.411.347-80");
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10), 1);
+    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Bateria', 10), 4);
+    $order->addItem(new Product(3, 'Acessórios', 'Cabo', 10), 5);
+    $order->applyCoupon(new Coupon("DISCOUNT10", 10, $expireDate));
+    $total = $order->getTotal();
+    $this->assertEquals(100, $total);
+  }
 }

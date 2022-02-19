@@ -2,24 +2,17 @@
 
 namespace App;
 
+use DateTime;
+use DateTimeInterface;
+
 class Coupon
 {
-  private string $code;
-  private float $percentage;
-
-  public function __construct(string $code, float $percentage = 0)
-  {
-    $this->code = $code;
-    $this->percentage = $percentage;
-  }
-
-  private function setPercentage(float $percentage): void
-  {
-    $this->percentage = $percentage;
-
-    if ($percentage < 0) $this->percentage = 0;
-    if ($percentage > 100) $this->percentage = 100;
-  }
+  public function __construct(
+    private string $code, 
+    private float $percentage = 0, 
+    private DateTimeInterface $expireDate = new DateTime()
+  )
+  {}
 
   public function getPercentage(): float
   {
@@ -29,5 +22,12 @@ class Coupon
   public function __toString()
   {
     return $this->code;
+  }
+
+  public function isExpired()
+  {
+    $now = new DateTime();
+    $diff = $now->diff($this->expireDate);
+    return $diff->invert === 1 && $diff->days > 0;
   }
 }
