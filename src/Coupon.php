@@ -10,7 +10,7 @@ class Coupon
   public function __construct(
     private string $code, 
     private float $percentage = 0, 
-    private DateTimeInterface $expireDate = new DateTime()
+    private ?DateTimeInterface $expireDate = null
   )
   {}
 
@@ -24,10 +24,19 @@ class Coupon
     return $this->code;
   }
 
-  public function isExpired()
+  public function isValid(DateTime $today = new DateTime())
   {
-    $now = new DateTime();
-    $diff = $now->diff($this->expireDate);
-    return $diff->invert === 1 && $diff->days > 0;
+    if(!$this->expireDate) return true;
+    return $this->expireDate->getTimestamp() >= $today->getTimestamp();
+  }
+
+  public function isExpired(DateTime $today = new DateTime())
+  {
+    return !$this->isValid($today);
+  }
+
+  public function applyDiscount(float $amount)
+  {
+    return $amount - ($amount * $this->percentage / 100);
   }
 }

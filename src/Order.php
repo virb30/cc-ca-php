@@ -4,6 +4,8 @@ namespace App;
 use App\Cpf;
 use App\OrderItem;
 use App\Coupon;
+use DateTime;
+use DateTimeInterface;
 
 final class Order
 {
@@ -13,20 +15,25 @@ final class Order
    */
   private array $items = [];
   private Coupon|null $coupon = null;
-
-  public function __construct(string $cpf)
+  private DateTimeInterface $orderDate;
+  private $freight = 0;
+  
+  public function __construct(string $cpf, DateTimeInterface $orderDate = new DateTime())
   {
     $this->cpf = new Cpf($cpf);    
+    $this->orderDate = $orderDate;
   }
 
   public function addItem(Product $item, int $quantity)
   {
     $orderItem = new OrderItem($item->getId(), $item->getPrice(), $quantity);
+    $this->freight += FreightCalculator::calculate($item) * $quantity;
     array_push($this->items, $orderItem);
   }
 
   public function applyCoupon(Coupon $coupon)
   {
+    if($coupon->isExpired($this->orderDate)) return;
     $this->coupon = $coupon;
   }
 
@@ -43,10 +50,15 @@ final class Order
         return $acc + $item->getTotal();
       }, 0);
 
-    if(!!$this->coupon && !$this->coupon->isExpired()){
-      $total -= $total * $this->coupon->getPercentage() / 100;
+    if(!!$this->coupon){
+      $total = $this->coupon->applyDiscount($total);
     }
 
     return $total;
+  }
+
+  public function getFreight()
+  {
+    return $this->freight;
   }
 }

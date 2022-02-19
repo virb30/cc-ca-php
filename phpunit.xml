@@ -13,6 +13,7 @@
          colors="true"
          failOnRisky="false"
          failOnWarning="false"
+         testdox="true"
          verbose="false">
     <testsuites>
         <testsuite name="Unit">

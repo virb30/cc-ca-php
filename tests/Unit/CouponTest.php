@@ -11,17 +11,24 @@ class CouponTest extends TestCase
     $this->assertEquals("VALE20", (string) $coupon);
   }
 
-  public function testCouponIsNotExpired()
+  public function testCouponIsValid()
   {
-    $expireDate = new DateTime();
-    $coupon = new Coupon("VALE20", 20, $expireDate);
-    $this->assertFalse($coupon->isExpired());
+    $coupon = new Coupon("VALE20", 20, new DateTime('2022-02-19'));
+    $today = new DateTime('2022-02-18');
+    $this->assertTrue($coupon->isValid($today));
   }
 
   public function testCouponIsExpired()
   {
-    $expireDate = new DateTime('-1 days'); 
-    $coupon = new Coupon("VALE20", 20, $expireDate);
-    $this->assertTrue($coupon->isExpired());
+    $coupon = new Coupon("VALE20", 20, new DateTime('2022-02-19'));
+    $today = new DateTime('2022-02-20');
+    $this->assertTrue($coupon->isExpired($today));
+  }
+
+  public function testShouldApplyDiscount()
+  {
+    $coupon = new Coupon("VALE10", 10, new DateTime('2022-02-19'));
+    $total = $coupon->applyDiscount(100);
+    $this->assertEquals(90, $total);
   }
 }

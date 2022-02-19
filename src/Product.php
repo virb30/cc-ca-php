@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Dimensions;
+
 final class Product
 {
 
@@ -9,7 +11,9 @@ final class Product
     private int $id,
     private string $category,
     private string $description, 
-    private float $price
+    private float $price,
+    private Dimensions $dimensions = new Dimensions(),
+    private float $weight = 0
   ) {}
 
   public function getId()
@@ -22,8 +26,17 @@ final class Product
     return $this->price;
   }
 
-  public function getQuantity()
+  public function getVolume()
   {
-    return $this->quantity;
+    return $this->dimensions->getVolume();
+  }
+
+  public function getDensity()
+  {
+    $volume = $this->getVolume();
+    if($volume === 0) {
+      return 0;
+    }
+    return round($this->weight / $volume);
   }
 }
