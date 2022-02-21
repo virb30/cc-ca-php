@@ -59,9 +59,9 @@ class OrderTest extends TestCase
   {
     $order = new Order("935.411.347-80");
     $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10, new Dimension(100, 30, 10), 3), 1);
-    $order->addItem(new Product(1, 'Eletrônicos', 'Camera', 10, new Dimension(20, 15, 10), 1), 1);
+    $order->addItem(new Product(1, 'Eletrônicos', 'Camera', 10, new Dimension(10, 30, 10), 0.9), 1);
     $order->addItem(new Product(1, 'Eletrodomésticos', 'Geladeira', 10, new Dimension(200, 100, 50), 40), 1);
     $total = $order->getTotal();
-    $this->assertEquals(469.99,$total);
+    $this->assertEquals(469,$total);
   }
 }
