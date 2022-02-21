@@ -11,16 +11,16 @@ class CouponTest extends TestCase
     $this->assertEquals("VALE20", (string) $coupon);
   }
 
-  public function testCouponIsValid()
+  public function testShouldCreateAValidCoupon()
   {
-    $coupon = new Coupon("VALE20", 20, new DateTime('2022-02-19'));
-    $today = new DateTime('2022-02-18');
-    $this->assertTrue($coupon->isValid($today));
+    $coupon = new Coupon("VALE20", 20, new DateTime('2022-02-19T10:00:00'));
+    $today = new DateTime('2022-02-19T10:00:00');
+    $this->assertFalse($coupon->isExpired($today));
   }
 
-  public function testCouponIsExpired()
+  public function testShouldCreateAnExpiredCoupon()
   {
-    $coupon = new Coupon("VALE20", 20, new DateTime('2022-02-19'));
+    $coupon = new Coupon("VALE20", 20, new DateTime('2022-02-19T10:00:00'));
     $today = new DateTime('2022-02-20');
     $this->assertTrue($coupon->isExpired($today));
   }
@@ -28,7 +28,7 @@ class CouponTest extends TestCase
   public function testShouldApplyDiscount()
   {
     $coupon = new Coupon("VALE10", 10, new DateTime('2022-02-19'));
-    $total = $coupon->applyDiscount(100);
-    $this->assertEquals(90, $total);
+    $discount = $coupon->calculateDiscount(100);
+    $this->assertEquals(10, $discount);
   }
 }

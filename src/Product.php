@@ -2,18 +2,17 @@
 
 namespace App;
 
-use App\Dimensions;
+use App\Dimension;
 
 final class Product
 {
-
   public function __construct(
     private int $id,
     private string $category,
     private string $description, 
     private float $price,
-    private Dimensions $dimensions = new Dimensions(),
-    private float $weight = 0
+    private readonly ?Dimension $dimensions = null,
+    private readonly ?float $weight = null
   ) {}
 
   public function getId()
@@ -28,15 +27,16 @@ final class Product
 
   public function getVolume()
   {
-    return $this->dimensions->getVolume();
+    if($this->dimensions) return $this->dimensions->getVolume();
+    return 0;
   }
 
   public function getDensity()
   {
-    $volume = $this->getVolume();
-    if($volume === 0) {
+    if($this->weight && $this->dimensions){
+      return round($this->weight / $this->dimensions->getVolume());
+    } else {
       return 0;
     }
-    return round($this->weight / $volume);
   }
 }

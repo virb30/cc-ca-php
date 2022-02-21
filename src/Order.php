@@ -9,32 +9,37 @@ use DateTimeInterface;
 
 final class Order
 {
-  public Cpf $cpf;
+  public readonly Cpf $cpf;
   /**
    * @var Product[]
    */
   private array $items = [];
   private Coupon|null $coupon = null;
-  private DateTimeInterface $orderDate;
-  private $freight = 0;
+  private readonly DateTimeInterface $issueDate;
+  private Freight $freight;
   
-  public function __construct(string $cpf, DateTimeInterface $orderDate = new DateTime())
+  public function __construct(
+    string $cpf, 
+    DateTimeInterface $issueDate = new DateTime()
+  )
   {
     $this->cpf = new Cpf($cpf);    
-    $this->orderDate = $orderDate;
+    $this->issueDate = $issueDate;
+    $this->freight = new Freight();
   }
 
   public function addItem(Product $item, int $quantity)
   {
     $orderItem = new OrderItem($item->getId(), $item->getPrice(), $quantity);
-    $this->freight += FreightCalculator::calculate($item) * $quantity;
+    $this->freight->addItem($item, $quantity);
     array_push($this->items, $orderItem);
   }
 
   public function applyCoupon(Coupon $coupon)
   {
-    if($coupon->isExpired($this->orderDate)) return;
-    $this->coupon = $coupon;
+    if(!$coupon->isExpired($this->issueDate)) {
+      $this->coupon = $coupon;
+    }
   }
 
   public function getItems()
@@ -51,9 +56,10 @@ final class Order
       }, 0);
 
     if(!!$this->coupon){
-      $total = $this->coupon->applyDiscount($total);
+      $total -= $this->coupon->calculateDiscount($total);
     }
 
+    $total += $this->freight->getTotal();
     return $total;
   }
 

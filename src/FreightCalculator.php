@@ -6,9 +6,9 @@ final class FreightCalculator
 {
   const MIN_FREIGHT = 10;
 
-  public static function calculate(Product $item)
+  public static function calculate(Product $item, int $quantity)
   {
-    $freight = 1000 * $item->getVolume() * ($item->getDensity() / 100);
+    $freight = 1000 * $item->getVolume() * ($item->getDensity() / 100) * $quantity;
     return max($freight, self::MIN_FREIGHT);
   }
 }

@@ -1,0 +1,29 @@
+<?php declare(strict_types=1);
+
+namespace App;
+
+class Freight
+{
+  private $total;
+  const DISTANCE = 1000;
+  const MIN_FREIGHT = 10;
+
+  public function __construct()
+  {
+    $this->total = 0;
+  }
+
+  public function addItem(Product $item, int $quantity)
+  {
+    $this->total += self::DISTANCE * $item->getVolume() * ($item->getDensity() / 100) * $quantity;
+  }
+
+  public function getTotal()
+  {
+    if($this->total > 0) {
+      return max($this->total, self::MIN_FREIGHT);
+    }
+
+    return 0;
+  }
+}

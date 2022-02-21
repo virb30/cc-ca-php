@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use App\Coupon;
-use App\Dimensions;
+use App\Dimension;
 use App\Order;
 use App\Product;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +44,7 @@ class OrderTest extends TestCase
     $this->assertEquals(90, $total);
   }
 
-  public function testShouldNotApplyDiscountIfCouponIsExpired()
+  public function testShouldCreateOrderWithExpiredCoupon()
   {
     $order = new Order("935.411.347-80", new DateTime('2022-02-21'));
     $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10), 1);
@@ -55,31 +55,13 @@ class OrderTest extends TestCase
     $this->assertEquals(100, $total);
   }
 
-  /**
-   * @dataProvider productProvider
-   */
-  public function testShouldCalculateFreight($products, $expected)
+  public function testShouldCreateOrderWith3ItemsAndCalculateFreight()
   {
     $order = new Order("935.411.347-80");
-    foreach($products as $product) {
-      $order->addItem($product, 1);
-    }
-    $shippingPrice = $order->getFreight();
-    $this->assertEquals($expected, $shippingPrice);
-  }
-
-
-  public function productProvider()
-  {
-    $guitar = new Product(1, 'Instrumentos Musicais', 'Guitarra', 10, new Dimensions(100, 30, 10), 3);
-    $camera = new Product(1, 'Eletrônicos', 'Camera', 10, new Dimensions(20, 15, 10), 1);
-    $freezer = new Product(1, 'Eletrodomésticos', 'Geladeira', 10, new Dimensions(200, 100, 50), 40);
-
-    return [
-      'guitar' => [[$guitar], 30],
-      'camera' => [[$camera], 10],
-      'freezer' => [[$freezer], 400],
-      'all' => [[$guitar, $camera, $freezer], 440]
-    ];
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10, new Dimension(100, 30, 10), 3), 1);
+    $order->addItem(new Product(1, 'Eletrônicos', 'Camera', 10, new Dimension(20, 15, 10), 1), 1);
+    $order->addItem(new Product(1, 'Eletrodomésticos', 'Geladeira', 10, new Dimension(200, 100, 50), 40), 1);
+    $total = $order->getTotal();
+    $this->assertEquals(469.99,$total);
   }
 }

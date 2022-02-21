@@ -2,17 +2,17 @@
 
 namespace App;
 
-final class Dimensions
+final class Dimension
 {
   public function __construct(
     public readonly int $height = 0,
     public readonly int $width = 0,
-    public readonly int $depth = 0
+    public readonly int $length = 0
   )
   {}
 
   public function getVolume()
   {
-    return ($this->width / 100) * ($this->height / 100) * ($this->depth / 100);
+    return ($this->width / 100) * ($this->height / 100) * ($this->length / 100);
   }
 }

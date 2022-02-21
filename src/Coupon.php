@@ -24,19 +24,14 @@ class Coupon
     return $this->code;
   }
 
-  public function isValid(DateTime $today = new DateTime())
-  {
-    if(!$this->expireDate) return true;
-    return $this->expireDate->getTimestamp() >= $today->getTimestamp();
-  }
-
   public function isExpired(DateTime $today = new DateTime())
   {
-    return !$this->isValid($today);
+    if(!$this->expireDate) return false;
+    return $this->expireDate->getTimestamp() < $today->getTimestamp();
   }
 
-  public function applyDiscount(float $amount)
+  public function calculateDiscount(float $amount)
   {
-    return $amount - ($amount * $this->percentage / 100);
+    return ($amount * $this->percentage / 100);
   }
 }
