@@ -59,9 +59,4 @@ final class Order
     $total += $this->freight->getTotal();
     return $total;
   }
-
-  public function getFreight()
-  {
-    return $this->freight;
-  }
 }

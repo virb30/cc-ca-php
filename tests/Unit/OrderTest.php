@@ -58,10 +58,10 @@ class OrderTest extends TestCase
   public function testShouldCreateOrderWith3ItemsAndCalculateFreight()
   {
     $order = new Order("935.411.347-80");
-    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10, new Dimension(100, 30, 10), 3), 1);
-    $order->addItem(new Product(1, 'Eletrônicos', 'Camera', 10, new Dimension(10, 30, 10), 0.9), 1);
-    $order->addItem(new Product(1, 'Eletrodomésticos', 'Geladeira', 10, new Dimension(200, 100, 50), 40), 1);
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000, new Dimension(100, 30, 10), 3), 1);
+    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Amplificador', 5000, new Dimension(100, 50, 50), 20), 1);
+    $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30, new Dimension(10, 10, 10), 1), 3);
     $total = $order->getTotal();
-    $this->assertEquals(469,$total);
+    $this->assertEquals(6350,$total);
   }
 }

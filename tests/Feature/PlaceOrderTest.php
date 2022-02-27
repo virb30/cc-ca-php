@@ -29,6 +29,31 @@ class PlaceOrderTest extends TestCase
       coupon: "VALE20"
     );
     $output = $placeOrder->execute($input);
-    $this->assertEquals(4872, $output->total);
+    $this->assertEquals(5132, $output->total);
+  }
+
+  public function testShouldTrhowsIfProductNotFound () 
+  {
+    $productRepository = new ProductRepositoryMemory();
+    $orderRepository = new OrderRepositoryMemory();
+    $couponRepository = new CouponRepositoryMemory();
+    $placeOrder = new PlaceOrder(
+      $productRepository,
+      $orderRepository,
+      $couponRepository
+    );
+    $input = new PlaceOrderInput(
+      cpf: "935.411.347-80",
+      orderItems: [
+        (object) ['idItem' => 1, 'quantity' => 1],
+        (object) ['idItem' => 2, 'quantity' => 1],
+        (object) ['idItem' => 3, 'quantity' => 3],
+        (object) ['idItem' => 4, 'quantity' => 3],
+      ],
+      coupon: "VALE20"
+    );
+
+    $this->expectException(Exception::class);
+    $placeOrder->execute($input);
   }
 }

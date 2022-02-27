@@ -20,10 +20,7 @@ class Freight
 
   public function getTotal()
   {
-    if($this->total > 0) {
-      return max($this->total, self::MIN_FREIGHT);
-    }
-
-    return 0;
+    if($this->total > 0 && $this->total < self::MIN_FREIGHT) return self::MIN_FREIGHT;
+    return $this->total;
   }
 }
