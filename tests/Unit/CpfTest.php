@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
+use App\Domain\Entity\Cpf;
 use PHPUnit\Framework\TestCase;
-use App\Cpf;
 
 class CpfTest extends TestCase
 {

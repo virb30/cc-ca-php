@@ -1,9 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App;
-use App\Cpf;
-use App\OrderItem;
-use App\Coupon;
+namespace App\Domain\Entity;
 use DateTime;
 use DateTimeInterface;
 
@@ -35,9 +32,9 @@ final class Order
     array_push($this->items, $orderItem);
   }
 
-  public function applyCoupon(Coupon $coupon)
+  public function applyCoupon(?Coupon $coupon)
   {
-    if(!$coupon->isExpired($this->issueDate)) {
+    if($coupon && !$coupon->isExpired($this->issueDate)) {
       $this->coupon = $coupon;
     }
   }

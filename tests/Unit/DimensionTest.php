@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
-use App\Dimension;
-use App\Dimensions;
+use App\Domain\Entity\Dimension;
 use PHPUnit\Framework\TestCase;
 
 class DimensionTest extends TestCase

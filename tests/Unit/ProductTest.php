@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use App\Dimension;
-use App\Product;
+use App\Domain\Entity\Dimension;
+use App\Domain\Entity\Product;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase

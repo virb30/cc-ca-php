@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-use App\Coupon;
-use App\Dimension;
-use App\Order;
-use App\Product;
+use App\Domain\Entity\Coupon;
+use App\Domain\Entity\Dimension;
+use App\Domain\Entity\Order;
+use App\Domain\Entity\Product;
 use PHPUnit\Framework\TestCase;
 
 class OrderTest extends TestCase
@@ -26,33 +26,33 @@ class OrderTest extends TestCase
   public function testShouldCreateOrderWithItems()
   {
     $order = new Order("935.411.347-80");
-    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10), 1);
-    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Bateria', 10), 4);
-    $order->addItem(new Product(3, 'Acessórios', 'Cabo', 10), 5);
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000), 1);
+    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Amplificador', 5000), 1);
+    $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30), 3);
     $total = $order->getTotal();
-    $this->assertEquals(100, $total);
+    $this->assertEquals(6090, $total);
   }
 
   public function testShouldCreateOrderWithCoupon()
   {
     $order = new Order("935.411.347-80");
-    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10), 1);
-    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Bateria', 10), 4);
-    $order->addItem(new Product(3, 'Acessórios', 'Cabo', 10), 5);
-    $order->applyCoupon(new Coupon("DISCOUNT10", 10));
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000), 1);
+    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Amplificador', 5000), 1);
+    $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30), 3);
+    $order->applyCoupon(new Coupon("VALE20", 20));
     $total = $order->getTotal();
-    $this->assertEquals(90, $total);
+    $this->assertEquals(4872, $total);
   }
 
   public function testShouldCreateOrderWithExpiredCoupon()
   {
     $order = new Order("935.411.347-80", new DateTime('2022-02-21'));
-    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 10), 1);
-    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Bateria', 10), 4);
-    $order->addItem(new Product(3, 'Acessórios', 'Cabo', 10), 5);
-    $order->applyCoupon(new Coupon("DISCOUNT10", 10, new DateTime('2022-02-20')));
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000), 1);
+    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Amplificador', 5000), 1);
+    $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30), 3);
+    $order->applyCoupon(new Coupon("VALE20", 20, new DateTime('2022-02-20')));
     $total = $order->getTotal();
-    $this->assertEquals(100, $total);
+    $this->assertEquals(6090, $total);
   }
 
   public function testShouldCreateOrderWith3ItemsAndCalculateFreight()

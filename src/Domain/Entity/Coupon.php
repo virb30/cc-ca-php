@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App;
+namespace App\Domain\Entity;
 
 use DateTime;
 use DateTimeInterface;
@@ -8,7 +8,7 @@ use DateTimeInterface;
 class Coupon
 {
   public function __construct(
-    private string $code, 
+    public readonly string $code, 
     private float $percentage = 0, 
     private ?DateTimeInterface $expireDate = null
   )

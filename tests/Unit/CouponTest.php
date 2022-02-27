@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use App\Coupon;
+use App\Domain\Entity\Coupon;
 use PHPUnit\Framework\TestCase;
 
 class CouponTest extends TestCase

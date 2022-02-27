@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-use App\Dimension;
-use App\FreightCalculator;
-use App\Product;
+use App\Domain\Entity\Dimension;
+use App\Domain\Entity\FreightCalculator;
+use App\Domain\Entity\Product;
 use PHPUnit\Framework\TestCase;
 
 class FreightCalculatorTest extends TestCase

@@ -16,5 +16,12 @@ class Arr
           $haystack, 
           array_keys($haystack)));
   }
+
+  public static function find(array $haystack, callable $callback)
+  {
+    $filtered = array_values(array_filter($haystack, $callback));
+    if(empty($filtered)) return null;
+    return $filtered[0];
+  }
 }
 

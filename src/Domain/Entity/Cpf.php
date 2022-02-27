@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App;
+namespace App\Domain\Entity;
 
 use App\Helpers\Arr;
 use DomainException;
