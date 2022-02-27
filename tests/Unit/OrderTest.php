@@ -62,8 +62,11 @@ class OrderTest extends TestCase
     $order->addItem(new Product(2, 'Instrumentos Musicais', 'Amplificador', 5000, new Dimension(100, 50, 50), 20), 1);
     $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30, new Dimension(10, 10, 10), 1), 3);
     $total = $order->getTotal();
+    $freight = $order->getFreight();
     $this->assertEquals(6350,$total);
+    $this->assertEquals(260, $freight);
   }
+
 
   public function testShouldCreateOrderWithCode()
   {

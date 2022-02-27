@@ -70,4 +70,9 @@ final class Cpf
     {
         return $this->value;
     }
+
+    public function __toString()
+    {
+        return $this->getValue();
+    }
 }

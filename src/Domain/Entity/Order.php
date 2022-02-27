@@ -8,13 +8,14 @@ final class Order
 {
   public readonly Cpf $cpf;
   /**
-   * @var Product[]
+   * @var OrderItem[]
    */
   private array $items = [];
   private Coupon|null $coupon = null;
-  private readonly DateTimeInterface $issueDate;
+  public readonly DateTimeInterface $issueDate;
   private Freight $freight;
   private OrderCode $code;
+  public readonly int $sequence;
   
   public function __construct(
     string $cpf, 
@@ -25,6 +26,7 @@ final class Order
     $this->cpf = new Cpf($cpf);    
     $this->issueDate = $issueDate;
     $this->freight = new Freight();
+    $this->sequence = $sequence;
     $this->code = new OrderCode($issueDate, $sequence);
   }
 
@@ -59,12 +61,23 @@ final class Order
       $total -= $this->coupon->calculateDiscount($total);
     }
 
-    $total += $this->freight->getTotal();
+    $total += $this->getFreight();
     return $total;
+  }
+
+  public function getFreight()
+  {
+    return $this->freight->getTotal();
   }
 
   public function getCode()
   {
     return $this->code->value;
+  }
+
+  public function getCoupon()
+  {
+    if(!$this->coupon) return null;
+    return $this->coupon->code;
   }
 }

@@ -19,7 +19,7 @@ services:
         USER_ID: ${UID:-0}
         GROUP_ID: ${GID:-0}
         INSTALL_REDIS: "false"
-        DB_DRIVER: "none"
+        DB_DRIVER: "mysql"
     tty: true
     environment:
       XDEBUG_MODE: debug
@@ -30,6 +30,8 @@ services:
     volumes:
       - .:/var/www/html
     user: ${UID}:${GID}
+    depends_on:
+      - db
   composer:
     image: composer
     volumes:
@@ -38,7 +40,19 @@ services:
     depends_on:
       - php
     command: composer install
-
+  db:
+    image: mysql
+    restart: unless-stopped
+    volumes:
+      - ./.docker/db/initdb/:/docker-entrypoint-initdb.d/
+    networks:
+      - internal
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: app
+      MYSQL_USER: php
+      MYSQL_PASSWORD: 123456 
+    user: ${UID}:${GID}
 networks:
   internal:
     driver: bridge

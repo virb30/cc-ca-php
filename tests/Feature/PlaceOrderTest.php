@@ -9,15 +9,20 @@ use PHPUnit\Framework\TestCase;
 
 class PlaceOrderTest extends TestCase
 {
+  protected function setUp(): void
+  {
+    parent::setUp();
+    // $connection = new PdoMysqlConnectionAdapter();
+    $this->productRepository = new ProductRepositoryMemory();
+    $this->orderRepository = new OrderRepositoryMemory();
+    $this->couponRepository = new CouponRepositoryMemory();
+  }
   public function testShouldPlaceOrder () 
   {
-    $productRepository = new ProductRepositoryMemory();
-    $orderRepository = new OrderRepositoryMemory();
-    $couponRepository = new CouponRepositoryMemory();
     $placeOrder = new PlaceOrder(
-      $productRepository,
-      $orderRepository,
-      $couponRepository
+      $this->productRepository,
+      $this->orderRepository,
+      $this->couponRepository
     );
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
@@ -34,13 +39,10 @@ class PlaceOrderTest extends TestCase
 
   public function testShouldPlaceOrderWithCode () 
   {
-    $productRepository = new ProductRepositoryMemory();
-    $orderRepository = new OrderRepositoryMemory();
-    $couponRepository = new CouponRepositoryMemory();
     $placeOrder = new PlaceOrder(
-      $productRepository,
-      $orderRepository,
-      $couponRepository
+      $this->productRepository,
+      $this->orderRepository,
+      $this->couponRepository
     );
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
@@ -58,13 +60,10 @@ class PlaceOrderTest extends TestCase
 
   public function testShouldThrowsIfProductNotFound () 
   {
-    $productRepository = new ProductRepositoryMemory();
-    $orderRepository = new OrderRepositoryMemory();
-    $couponRepository = new CouponRepositoryMemory();
     $placeOrder = new PlaceOrder(
-      $productRepository,
-      $orderRepository,
-      $couponRepository
+      $this->productRepository,
+      $this->orderRepository,
+      $this->couponRepository
     );
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
