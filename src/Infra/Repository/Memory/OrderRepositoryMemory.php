@@ -16,4 +16,9 @@ final class OrderRepositoryMemory implements OrderRepository
   {
     array_push($this->orders, $order);
   }
+
+  public function count(): int
+  {
+    return count($this->orders);
+  }
 }

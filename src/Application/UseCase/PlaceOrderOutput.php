@@ -4,8 +4,8 @@ namespace App\Application\UseCase;
 
 class PlaceOrderOutput
 {
-  public function __construct(public readonly float $total)
-  {
-    
-  }
+  public function __construct(
+    public readonly float $total,
+    public readonly string $code
+  ) {}
 }

@@ -7,4 +7,5 @@ use App\Domain\Entity\Order;
 interface OrderRepository
 {
   public function save(Order $order): void;
+  public function count(): int;
 }

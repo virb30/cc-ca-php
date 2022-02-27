@@ -14,15 +14,18 @@ final class Order
   private Coupon|null $coupon = null;
   private readonly DateTimeInterface $issueDate;
   private Freight $freight;
+  private OrderCode $code;
   
   public function __construct(
     string $cpf, 
-    DateTimeInterface $issueDate = new DateTime()
+    DateTimeInterface $issueDate = new DateTime(),
+    int $sequence = 1
   )
   {
     $this->cpf = new Cpf($cpf);    
     $this->issueDate = $issueDate;
     $this->freight = new Freight();
+    $this->code = new OrderCode($issueDate, $sequence);
   }
 
   public function addItem(Product $item, int $quantity)
@@ -58,5 +61,10 @@ final class Order
 
     $total += $this->freight->getTotal();
     return $total;
+  }
+
+  public function getCode()
+  {
+    return $this->code->value;
   }
 }

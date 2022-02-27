@@ -18,7 +18,8 @@ final class PlaceOrder
 
   public function execute(PlaceOrderInput $input): PlaceOrderOutput
   {
-    $order = new Order($input->cpf);
+    $sequence = $this->orderRepository->count() + 1;
+    $order = new Order($input->cpf, $input->date, $sequence);
     foreach($input->orderItems as $orderItem){
       $product = $this->productRepository->getById($orderItem->idItem);
       if(!$product) throw new Exception("Product not found");
@@ -29,7 +30,7 @@ final class PlaceOrder
       $order->applyCoupon($coupon);
     }
     $this->orderRepository->save($order);
-    $output = new PlaceOrderOutput($order->getTotal());
+    $output = new PlaceOrderOutput($order->getTotal(), $order->getCode());
     return $output;
   }
 }
