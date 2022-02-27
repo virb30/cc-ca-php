@@ -5,7 +5,7 @@ namespace App\Infra\Repository\Memory;
 use App\Domain\Entity\Dimension;
 use App\Domain\Entity\Product;
 use App\Domain\Repository\ProductRepository;
-use App\Helpers\Arr;
+use App\Support\Arr;
 
 final class ProductRepositoryMemory implements ProductRepository
 {

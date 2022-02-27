@@ -4,7 +4,7 @@ namespace App\Infra\Repository\Memory;
 
 use App\Domain\Entity\Coupon;
 use App\Domain\Repository\CouponRepository;
-use App\Helpers\Arr;
+use App\Support\Arr;
 use DateTime;
 
 final class CouponRepositoryMemory implements CouponRepository

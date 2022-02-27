@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entity;
 
-use App\Helpers\Arr;
+use App\Support\Arr;
 use DomainException;
 
 final class Cpf
