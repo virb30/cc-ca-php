@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\ValidateCoupon;
 use App\Domain\Repository\CouponRepository;
 
 final class ValidateCoupon
@@ -13,7 +13,6 @@ final class ValidateCoupon
   {
     $coupon = $this->couponRepository->getByCode($code);
     if (!$coupon) return false;
-
     return !$coupon->isExpired();
   }
 }

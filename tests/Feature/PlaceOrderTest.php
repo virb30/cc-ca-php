@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use App\Application\UseCase\PlaceOrder;
-use App\Application\UseCase\PlaceOrderInput;
+use App\Application\UseCase\PlaceOrder\PlaceOrder;
+use App\Application\UseCase\PlaceOrder\PlaceOrderInput;
 use App\Infra\Repository\Memory\CouponRepositoryMemory;
 use App\Infra\Repository\Memory\OrderRepositoryMemory;
 use App\Infra\Repository\Memory\ProductRepositoryMemory;
@@ -52,10 +52,11 @@ class PlaceOrderTest extends TestCase
         (object) ['idItem' => 3, 'quantity' => 3],
       ],
       coupon: "VALE20",
-      date: new DateTime("2021-01-01")
+      issueDate: new DateTime("2021-01-01T10:00:00")
     );
+    $placeOrder->execute($input);
     $output = $placeOrder->execute($input);
-    $this->assertEquals("202100000001", $output->code);
+    $this->assertEquals("202100000002", $output->code);
   }
 
   public function testShouldThrowsIfProductNotFound () 

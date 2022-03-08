@@ -1,9 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\SimulateFreight;
 
-use App\Application\UseCase\SimulateFreightInput;
-use App\Application\UseCase\SimulateFreightOutput;
 use App\Domain\Entity\Freight;
 use App\Domain\Repository\ProductRepository;
 use Exception;

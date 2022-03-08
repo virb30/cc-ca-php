@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\SimulateFreight;
 
 class SimulateFreightOutput
 {

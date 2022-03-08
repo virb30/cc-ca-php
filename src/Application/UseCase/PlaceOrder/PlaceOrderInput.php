@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\PlaceOrder;
 
 use DateTime;
 use DateTimeInterface;
@@ -17,6 +17,6 @@ class PlaceOrderInput
     public readonly string $cpf,
     public readonly array $orderItems,
     public readonly ?string $coupon,
-    public readonly DateTimeInterface $date = new DateTime()
+    public readonly DateTimeInterface $issueDate = new DateTime()
   ) { }
 }

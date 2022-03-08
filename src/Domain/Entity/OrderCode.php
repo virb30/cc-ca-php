@@ -10,7 +10,12 @@ class OrderCode
 
   public function __construct(DateTimeInterface $date, int $sequence)
   {
+    $this->value = $this->generateCode($date, $sequence);
+  }
+
+  private function generateCode(DateTimeInterface $date, int $sequence)
+  {
     $year = $date->format('Y');
-    $this->value = $year.str_pad((string) $sequence, 8, "0", STR_PAD_LEFT);
+    return $year.str_pad((string) $sequence, 8, "0", STR_PAD_LEFT);
   }
 }

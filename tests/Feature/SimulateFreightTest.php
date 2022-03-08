@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use App\Application\UseCase\SimulateFreight;
-use App\Application\UseCase\SimulateFreightInput;
+use App\Application\UseCase\SimulateFreight\SimulateFreight;
+use App\Application\UseCase\SimulateFreight\SimulateFreightInput;
 use App\Infra\Repository\Memory\ProductRepositoryMemory;
 use PHPUnit\Framework\TestCase;
 

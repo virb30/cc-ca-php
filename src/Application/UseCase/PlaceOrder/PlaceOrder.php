@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\PlaceOrder;
 
 use App\Domain\Entity\Order;
 use App\Domain\Repository\CouponRepository;
@@ -19,7 +19,7 @@ final class PlaceOrder
   public function execute(PlaceOrderInput $input): PlaceOrderOutput
   {
     $sequence = $this->orderRepository->count() + 1;
-    $order = new Order($input->cpf, $input->date, $sequence);
+    $order = new Order($input->cpf, $input->issueDate, $sequence);
     foreach($input->orderItems as $orderItem){
       $product = $this->productRepository->getById($orderItem->idItem);
       if(!$product) throw new Exception("Product not found");
@@ -30,7 +30,7 @@ final class PlaceOrder
       $order->applyCoupon($coupon);
     }
     $this->orderRepository->save($order);
-    $output = new PlaceOrderOutput($order->getTotal(), $order->getCode());
+    $output = new PlaceOrderOutput($order->getCode(), $order->getTotal());
     return $output;
   }
 }

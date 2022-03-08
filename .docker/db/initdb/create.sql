@@ -76,6 +76,7 @@ create table `order` (
   cpf text,
   issue_date timestamp,
   freight numeric,
+  total numeric,
   sequence integer
 );
 create table `order_item` (
