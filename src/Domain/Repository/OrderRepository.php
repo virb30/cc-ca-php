@@ -8,4 +8,5 @@ interface OrderRepository
 {
   public function save(Order $order): void;
   public function count(): int;
+  public function getByCode(string $code): Order;
 }
