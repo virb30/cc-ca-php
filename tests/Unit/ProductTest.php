@@ -18,4 +18,11 @@ class ProductTest extends TestCase
     $density = $product->getDensity();
     $this->assertEquals(100, $density);
   }
+
+  public function testShouldNotCreateProductWithNegativeWeight()
+  {
+    $this->expectException(DomainException::class);
+    $this->expectExceptionMessage("Weight cannot be negative");
+    new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000, new Dimension(100, 30, 10), -3);
+  }
 }
