@@ -1,11 +1,16 @@
 <?php
 
-require __DIR__."/../vendor/autoload.php";
+use Slim\Factory\AppFactory;
 
-use App\Example;
+require __DIR__ . '/../vendor/autoload.php';
 
-$example = new Example(false);
+// Instantiate App
+$app = AppFactory::create();
 
-$example->execute();
+// Add error middleware
+$app->addErrorMiddleware(true, true, true);
 
-phpinfo();
+$routes = require __DIR__.'/../app.routes.php';
+$routes($app);
+
+$app->run();
