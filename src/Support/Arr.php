@@ -23,5 +23,11 @@ class Arr
     if(empty($filtered)) return null;
     return $filtered[0];
   }
+
+  public static function exists(array $haystack, callable $callback)
+  {
+    $filtered = array_filter($haystack, $callback);
+    return !empty($filtered);
+  }
 }
 

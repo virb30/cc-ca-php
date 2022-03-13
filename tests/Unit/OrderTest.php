@@ -79,4 +79,15 @@ class OrderTest extends TestCase
     $code = $order->getCode();
     $this->assertEquals("202200000001",$code);
   }
+
+  public function testShouldNotCreateOrderWithDuplicatedItems()
+  {
+    $order = new Order("935.411.347-80");
+    $this->expectException(DomainException::class);
+    
+    $order->addItem(new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000, new Dimension(100, 30, 10), 3), 1);
+    $order->addItem(new Product(2, 'Instrumentos Musicais', 'Amplificador', 5000, new Dimension(100, 50, 50), 20), 1);
+    $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30, new Dimension(10, 10, 10), 1), 3);
+    $order->addItem(new Product(3, 'Instrumentos Musicais', 'Cabo', 30, new Dimension(10, 10, 10), 1), 3);
+  }
 }

@@ -1,8 +1,11 @@
 <?php declare(strict_types=1);
 
 namespace App\Domain\Entity;
+
+use App\Support\Arr;
 use DateTime;
 use DateTimeInterface;
+use DomainException;
 
 final class Order
 {
@@ -32,6 +35,10 @@ final class Order
 
   public function addItem(Product $item, int $quantity)
   {
+    $itemExists = Arr::exists($this->items, fn($orderItem) => $orderItem->idItem === $item->getId());
+    if($itemExists) {
+      throw new DomainException("This Product already exists in Order");
+    }
     $orderItem = new OrderItem($item->getId(), $item->getPrice(), $quantity);
     $this->freight->addItem($item, $quantity);
     array_push($this->items, $orderItem);
