@@ -10,5 +10,12 @@ return function (App $app) {
     return $response;
   });
 
+  $app->get('/', function(Request $request, Response $response) {
+    $response->getBody()
+      ->write('<a href="/hello/world">Try /hello/world</a>');
+
+    return $response->withStatus(200);
+  });
+
   $app->get('/hello/{name}', HelloWorldController::class);
 };
