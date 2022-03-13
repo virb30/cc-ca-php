@@ -11,4 +11,10 @@ class OrderItemTest extends TestCase
     $total = $orderItem->getTotal();
     $this->assertEquals(100, $total);
   }
+
+  public function testShouldNotCreateOrderItemWithNegativeQuantity()
+  {
+    $this->expectException(DomainException::class);
+    $orderItem = new OrderItem(1, 10, -1);
+  }
 }
