@@ -2,9 +2,12 @@
 
 namespace App\Infra\Repository\Database;
 
+use App\Domain\Entity\Cpf;
 use App\Domain\Entity\Order;
 use App\Domain\Repository\OrderRepository;
 use App\Infra\Database\Connection;
+use DateTime;
+use Exception;
 
 class OrderRepositoryDatabase implements OrderRepository
 {
@@ -32,5 +35,45 @@ class OrderRepositoryDatabase implements OrderRepository
       $sql = "INSERT INTO `order_item` (id_order, id_item, price, quantity) values(?, ?, ?, ?)";
       $this->connection->query($sql, [$sequence, $item->idItem, $item->price, $item->quantity]);
     }
+  }
+
+  public function getByCode(string $code): Order
+  {
+    $sql = "SELECT * FROM `order` WHERE `code` = ?";
+    $orderData = $this->connection->query($sql, [$code]);
+
+    if(empty($orderData)) {
+      throw new Exception('Order not found');
+    }
+
+    $order = new Order(
+      $orderData['cpf'],
+      new DateTime($orderData['issue_date']),
+      $orderData['sequence']
+    );
+    
+    return $order;
+  }
+
+  /**
+   *
+   * @param Cpf $cpf
+   * @return Order[]
+   */
+  public function getByCpf(Cpf $cpf): array
+  {
+    $sql = "SELECT * FROM `order` WHERE `cpf` = ?";
+    $ordersData = $this->connection->query($sql, [$cpf]);
+
+    $orders = [];
+    foreach($ordersData as $orderData) {
+      array_push($orders, new Order(
+        $orderData['cpf'],
+        new DateTime($orderData['issue_date']),
+        $orderData['sequence']
+      ));
+    }
+
+    return $orders;
   }
 }

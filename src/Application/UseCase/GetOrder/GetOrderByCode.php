@@ -15,17 +15,9 @@ class GetOrderByCode
   public function execute(string $code): OrderOutput
   {
     $order = $this->orderRepository->getByCode($code);
-    $orderProducts = [];
-    foreach($order->getItems() as $orderItem) {
-      $product = $this->productRepository->getById($orderItem->idItem);
-      array_push($orderProducts, new OrderItemOutput($product->description, $orderItem->price, $orderItem->quantity));
-    }
 
     $output = new OrderOutput(
       $order->getCode(),
-      $order->getTotal(),
-      $orderProducts,
-      $order->getCoupon(),
       $order->issueDate
     );
 

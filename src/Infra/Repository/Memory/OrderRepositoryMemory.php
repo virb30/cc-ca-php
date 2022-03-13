@@ -2,9 +2,10 @@
 
 namespace App\Infra\Repository\Memory;
 
+use App\Domain\Entity\Cpf;
 use App\Domain\Entity\Order;
 use App\Domain\Repository\OrderRepository;
-use Illuminate\Contracts\Queue\EntityNotFoundException;
+use Exception;
 
 final class OrderRepositoryMemory implements OrderRepository
 {
@@ -30,9 +31,22 @@ final class OrderRepositoryMemory implements OrderRepository
     });
 
     if(empty($order)) {
-      throw new EntityNotFoundException('Order', $code);
+      throw new Exception('Order not found');
     }
 
     return $order[0];
+  }
+
+  /**
+   * @param Cpf $cpf
+   * @return Order[]
+   */
+  public function getByCpf(Cpf $cpf): array
+  {
+    $orders = array_filter($this->orders, function(Order $order) use ($cpf) {
+      return (string) $order->cpf === (string) $cpf;
+    });
+
+    return $orders;
   }
 }
