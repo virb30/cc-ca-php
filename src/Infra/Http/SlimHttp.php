@@ -22,7 +22,6 @@ class SlimHttp implements Http
     $method = strtolower($method);
     $this->app->$method($url, function(ServerRequestInterface $request, ResponseInterface $response) use($callback) {
       $result = $callback($request->getQueryParams(), $request->getParsedBody());
-      $result['from'] = 'slim';
       $response->getBody()->write(json_encode($result));
       return $response->withHeader('Content-Type', 'application/json');
     });

@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Infra\Http\SlimHttp;
 use Slim\Factory\AppFactory;
 
 trait CreatesApplication
@@ -9,12 +10,7 @@ trait CreatesApplication
   public function createApplication()
   {
       // Instantiate the app
-      $app = AppFactory::create();
-
-      // Register routes
-      $routes = require __DIR__ . '/../config/routes.php';
-      $routes($app);
-
+      $app = new SlimHttp();
       return $app;
   }
 }
