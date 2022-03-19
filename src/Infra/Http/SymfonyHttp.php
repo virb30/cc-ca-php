@@ -3,36 +3,49 @@
 namespace App\Infra\Http;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class SymfonyHttp
+class SymfonyHttp implements Http
 {
+  public $routes;
+  public RequestContext $context;
+
   public function __construct()
   {
-    $routes = new RouteCollection();
-    $routes->add('books', new Route(
+    $this->routes = new RouteCollection();
+    $this->context = new RequestContext();
+  }
+
+  public function route(string $method, string $url, callable $callback)
+  {
+    $this->routes->add('books', new Route(
       '/books',
-      ['_controller' => function($request, $response) {
-        $books = [
-          (object) ['title' => 'Clean Code'],
-          (object) ['title' => 'Refactoring'],
-          (object) ['title' => 'Implementing Domain-Driven Design'],
-        ];
-        $response->getBody()->write(json_encode($books));
-        return $response->withHeader('Content-Type', 'application/json');
-      }]
+      ['handler' => function(Request $request) use($callback) {
+        $result = $callback($request->query->all(), $request->request->all());
+        $response = new Response(json_encode($result));
+        $headers = new ResponseHeaderBag(['Content-Type' => 'application/json']);
+        $response->headers = $headers;
+        $response->send();
+      }],
+      [],
+      [],
+      '',
+      [],
+      [strtoupper($method)]
     ));
- 
-    // Init RequestContext object
-    $context = new RequestContext();
-    $context->fromRequest(Request::createFromGlobals());
- 
-    // Init UrlMatcher object
-    $matcher = new UrlMatcher($routes, $context);
-    $parameters = $matcher->match($context->getPathInfo());
-    $parameters['_controller']();
+  }
+
+  public function run()
+  {
+    $request = Request::createFromGlobals();
+    $this->context->fromRequest($request);
+    $matcher = new UrlMatcher($this->routes, $this->context);
+    $parameters = $matcher->match($this->context->getPathInfo());
+    $parameters['handler']($request);
   }
 }

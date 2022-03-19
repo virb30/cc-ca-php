@@ -4,10 +4,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Infra\Http\SlimHttp;
 use App\Infra\Http\SymfonyHttp;
+use App\Infra\Http\LumenHttp;
 
-$slimHttp = new SlimHttp();
+$http = new LumenHttp();
 
-$slimHttp->route('get', '/books', function($params, $body) {
+$http->route('get', '/books', function($params, $body) {
   $books = [
     (object) ['title' => 'Clean Code'],
     (object) ['title' => 'Refactoring'],
@@ -16,4 +17,4 @@ $slimHttp->route('get', '/books', function($params, $body) {
   return $books;
 });
 
-$slimHttp->run();
+$http->run();
