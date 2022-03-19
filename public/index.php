@@ -1,16 +1,19 @@
-<?php
-
-use Slim\Factory\AppFactory;
+<?php declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Instantiate App
-$app = AppFactory::create();
+use App\Infra\Http\SlimHttp;
+use App\Infra\Http\SymfonyHttp;
 
-// Add error middleware
-$app->addErrorMiddleware(true, true, true);
+$slimHttp = new SlimHttp();
 
-$routes = require __DIR__.'/../config/routes.php';
-$routes($app);
+$slimHttp->route('get', '/books', function($params, $body) {
+  $books = [
+    (object) ['title' => 'Clean Code'],
+    (object) ['title' => 'Refactoring'],
+    (object) ['title' => 'Implementing Domain-Driven Design'],
+  ];
+  return $books;
+});
 
-$app->run();
+$slimHttp->run();

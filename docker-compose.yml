@@ -11,6 +11,8 @@ services:
     volumes:
       - .:/var/www/html
     user: ${UID}:${GID}
+    depends_on:
+      - php
   php:
     build:
       context: ./.docker
