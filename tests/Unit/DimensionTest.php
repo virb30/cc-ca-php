@@ -15,24 +15,10 @@ class DimensionTest extends TestCase
     $this->assertEquals(0.03, $volume);
   }
 
-  public function testShouldNotCreateDimensionWithNegativeHeight()
+  public function testShouldThrowsExceptionIfDimensionIsNegative()
   {
     $this->expectException(DomainException::class);
-    $this->expectExceptionMessage("Height cannot be negative");
-    new Dimension(-100, 30, 10);
-  }
-
-  public function testShouldNotCreateDimensionWithNegativeWidth()
-  {
-    $this->expectException(DomainException::class);
-    $this->expectExceptionMessage("Width cannot be negative");
-    new Dimension(100, -30, 10);
-  }
-
-  public function testShouldNotCreateDimensionWithNegativeLength()
-  {
-    $this->expectException(DomainException::class);
-    $this->expectExceptionMessage("Length cannot be negative");
-    new Dimension(100, 30, -10);
+    $this->expectExceptionMessage("Invalid dimensions");
+    new Dimension(-100, -30, -10);
   }
 }

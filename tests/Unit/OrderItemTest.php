@@ -18,6 +18,7 @@ class OrderItemTest extends TestCase
   public function testShouldNotCreateOrderItemWithNegativeQuantity()
   {
     $this->expectException(DomainException::class);
-    $orderItem = new OrderItem(1, 10, -1);
+    $this->expectExceptionMessage("Quantity must be positive");
+    new OrderItem(1, 10, -1);
   }
 }

@@ -25,7 +25,7 @@ class ProductTest extends TestCase
   public function testShouldNotCreateProductWithNegativeWeight()
   {
     $this->expectException(DomainException::class);
-    $this->expectExceptionMessage("Weight cannot be negative");
+    $this->expectExceptionMessage("Invalid weight");
     new Product(1, 'Instrumentos Musicais', 'Guitarra', 1000, new Dimension(100, 30, 10), -3);
   }
 }

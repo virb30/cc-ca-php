@@ -12,26 +12,10 @@ final class Product
     public readonly string $description, 
     public readonly float $price,
     public readonly ?Dimension $dimensions = null,
-    ?float $weight = null
+    public readonly ?float $weight = null
   ) 
   {
-    $this->setWeight($weight);
-  }
-
-  private function setWeight(?float $weight)
-  {
-    if(!$this->validate($weight)) {
-      throw new DomainException("Weight cannot be negative");
-    }
-    $this->weight = $weight;
-  }
-
-  private function validate(?float $value)
-  {
-    if(!$value) {
-      return true;
-    }
-    return $value >= 0;
+    if(!!$weight && $weight < 0 ) throw new DomainException("Invalid weight");
   }
 
   public function getId()
