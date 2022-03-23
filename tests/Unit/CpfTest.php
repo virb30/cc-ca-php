@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Domain\Entity\Cpf;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class CpfTest extends TestCase

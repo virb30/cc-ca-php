@@ -8,6 +8,7 @@ use App\Domain\Factory\RepositoryFactory;
 use App\Infra\Database\Connection;
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Factory\MemoryRepositoryFactory;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class SimulateFreightTest extends TestCase

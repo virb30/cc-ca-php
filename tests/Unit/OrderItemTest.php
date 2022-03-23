@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Domain\Entity\OrderItem;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class OrderItemTest extends TestCase

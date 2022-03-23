@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Domain\Entity\Dimension;
 use App\Domain\Entity\Product;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase

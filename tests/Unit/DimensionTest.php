@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Domain\Entity\Dimension;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class DimensionTest extends TestCase

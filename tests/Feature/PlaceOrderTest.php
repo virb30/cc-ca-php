@@ -10,6 +10,7 @@ use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Factory\DatabaseRepositoryFactory;
 use App\Infra\Factory\MemoryRepositoryFactory;
 use DateTime;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class PlaceOrderTest extends TestCase

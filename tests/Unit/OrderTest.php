@@ -7,6 +7,7 @@ use App\Domain\Entity\Dimension;
 use App\Domain\Entity\Order;
 use App\Domain\Entity\Product;
 use DateTime;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class OrderTest extends TestCase
