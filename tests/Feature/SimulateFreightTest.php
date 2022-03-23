@@ -2,15 +2,26 @@
 
 use App\Application\UseCase\SimulateFreight\SimulateFreight;
 use App\Application\UseCase\SimulateFreight\SimulateFreightInput;
-use App\Infra\Repository\Memory\ProductRepositoryMemory;
+use App\Domain\Factory\RepositoryFactory;
+use App\Infra\Database\Connection;
+use App\Infra\Database\PdoMysqlConnectionAdapter;
+use App\Infra\Factory\MemoryRepositoryFactory;
 use PHPUnit\Framework\TestCase;
 
 class SimulateFreightTest extends TestCase
 {
+  private Connection $connection;
+  private RepositoryFactory $repositoryFactory;
+
+  protected function setUp(): void
+  {
+    // $this->connection = new PdoMysqlConnectionAdapter();
+    $this->repositoryFactory = new MemoryRepositoryFactory();
+  }
+
   public function testShouldSimulateFreight()
   {
-    $productRepository = new ProductRepositoryMemory();
-    $simulateFreight = new SimulateFreight($productRepository);
+    $simulateFreight = new SimulateFreight($this->repositoryFactory);
     $input = new SimulateFreightInput(
       orderItems: [
         (object) ['idItem' => 1, 'quantity' => 1],
@@ -24,8 +35,7 @@ class SimulateFreightTest extends TestCase
 
   public function testShouldTrhowsIfProductNotFound()
   {
-    $productRepository = new ProductRepositoryMemory();
-    $simulateFreight = new SimulateFreight($productRepository);
+    $simulateFreight = new SimulateFreight($this->repositoryFactory);
     $input = new SimulateFreightInput(
       orderItems: [
         (object) ['idItem' => 1, 'quantity' => 1],

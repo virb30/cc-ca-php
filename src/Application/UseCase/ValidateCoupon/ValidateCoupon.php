@@ -1,13 +1,18 @@
 <?php declare(strict_types=1);
 
 namespace App\Application\UseCase\ValidateCoupon;
+
+use App\Domain\Factory\RepositoryFactory;
 use App\Domain\Repository\CouponRepository;
 
 final class ValidateCoupon
 {
-  public function __construct(
-    private readonly CouponRepository $couponRepository
-  ) { }
+  private readonly CouponRepository $couponRepository;
+
+  public function __construct(readonly RepositoryFactory $repositoryFactory) 
+  { 
+    $this->couponRepository = $repositoryFactory->createCouponRepository();
+  }
 
   public function execute(string $code): bool
   {

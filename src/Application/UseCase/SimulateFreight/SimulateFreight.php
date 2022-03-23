@@ -3,14 +3,18 @@
 namespace App\Application\UseCase\SimulateFreight;
 
 use App\Domain\Entity\Freight;
+use App\Domain\Factory\RepositoryFactory;
 use App\Domain\Repository\ProductRepository;
 use Exception;
 
 final class SimulateFreight
 {
-  public function __construct(
-    private ProductRepository $productRepository
-  ) { }
+  private ProductRepository $productRepository;
+
+  public function __construct(readonly RepositoryFactory $repositoryFactory)
+  {
+    $this->productRepository = $repositoryFactory->createProductRepository();
+  }
 
   public function execute(SimulateFreightInput $input): SimulateFreightOutput
   {

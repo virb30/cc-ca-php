@@ -2,28 +2,27 @@
 
 use App\Application\UseCase\PlaceOrder\PlaceOrder;
 use App\Application\UseCase\PlaceOrder\PlaceOrderInput;
-use App\Infra\Repository\Memory\CouponRepositoryMemory;
-use App\Infra\Repository\Memory\OrderRepositoryMemory;
-use App\Infra\Repository\Memory\ProductRepositoryMemory;
+use App\Domain\Factory\RepositoryFactory;
+use App\Infra\Database\Connection;
+use App\Infra\Database\PdoMysqlConnectionAdapter;
+use App\Infra\Factory\DatabaseRepositoryFactory;
+use App\Infra\Factory\MemoryRepositoryFactory;
 use PHPUnit\Framework\TestCase;
 
 class PlaceOrderTest extends TestCase
 {
+  private Connection $connection;
+  private RepositoryFactory $repositoryFactory;
+
   protected function setUp(): void
   {
     parent::setUp();
-    // $connection = new PdoMysqlConnectionAdapter();
-    $this->productRepository = new ProductRepositoryMemory();
-    $this->orderRepository = new OrderRepositoryMemory();
-    $this->couponRepository = new CouponRepositoryMemory();
+    // $this->connection = new PdoMysqlConnectionAdapter();
+    $this->repositoryFactory = new MemoryRepositoryFactory();
   }
   public function testShouldPlaceOrder () 
   {
-    $placeOrder = new PlaceOrder(
-      $this->productRepository,
-      $this->orderRepository,
-      $this->couponRepository
-    );
+    $placeOrder = new PlaceOrder($this->repositoryFactory);
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
       orderItems: [
@@ -39,11 +38,7 @@ class PlaceOrderTest extends TestCase
 
   public function testShouldPlaceOrderWithCode () 
   {
-    $placeOrder = new PlaceOrder(
-      $this->productRepository,
-      $this->orderRepository,
-      $this->couponRepository
-    );
+    $placeOrder = new PlaceOrder($this->repositoryFactory);
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
       orderItems: [
@@ -61,11 +56,7 @@ class PlaceOrderTest extends TestCase
 
   public function testShouldThrowsIfProductNotFound () 
   {
-    $placeOrder = new PlaceOrder(
-      $this->productRepository,
-      $this->orderRepository,
-      $this->couponRepository
-    );
+    $placeOrder = new PlaceOrder($this->repositoryFactory);
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
       orderItems: [

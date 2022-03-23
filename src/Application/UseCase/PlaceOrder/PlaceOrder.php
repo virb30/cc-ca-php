@@ -3,18 +3,17 @@
 namespace App\Application\UseCase\PlaceOrder;
 
 use App\Domain\Entity\Order;
-use App\Domain\Repository\CouponRepository;
-use App\Domain\Repository\OrderRepository;
-use App\Domain\Repository\ProductRepository;
+use App\Domain\Factory\RepositoryFactory;
 use Exception;
 
 final class PlaceOrder
 {
-  public function __construct(
-    private ProductRepository $productRepository,
-    private OrderRepository $orderRepository,
-    private CouponRepository $couponRepository
-  ) {}
+  public function __construct(readonly RepositoryFactory $repositoryFactory) 
+  {
+    $this->productRepository = $repositoryFactory->createProductRepository();
+    $this->couponRepository = $repositoryFactory->createCouponRepository();
+    $this->orderRepository = $repositoryFactory->createOrderRepository();
+  }
 
   public function execute(PlaceOrderInput $input): PlaceOrderOutput
   {
