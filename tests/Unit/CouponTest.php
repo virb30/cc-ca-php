@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
+namespace Tests\Unit;
+
 use App\Domain\Entity\Coupon;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class CouponTest extends TestCase

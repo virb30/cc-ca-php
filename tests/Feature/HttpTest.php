@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 namespace Tests\Feature;
-use GuzzleHttp\Client;
 use Tests\TestCase;
 
 class HttpTest extends TestCase

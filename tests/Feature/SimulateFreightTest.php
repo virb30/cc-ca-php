@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Tests\Feature;
+
 use App\Application\UseCase\SimulateFreight\SimulateFreight;
 use App\Application\UseCase\SimulateFreight\SimulateFreightInput;
 use App\Domain\Factory\RepositoryFactory;

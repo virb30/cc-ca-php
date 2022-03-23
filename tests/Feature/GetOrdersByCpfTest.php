@@ -1,10 +1,12 @@
 <?php declare(strict_types=1);
 
+namespace Tests\Feature;
+
 use App\Application\UseCase\GetOrder\GetOrdersByCpf;
-use App\Domain\Entity\Cpf;
 use App\Domain\Entity\Order;
 use App\Infra\Repository\Memory\OrderRepositoryMemory;
 use App\Infra\Repository\Memory\ProductRepositoryMemory;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class GetOrdersByCpfTest extends TestCase

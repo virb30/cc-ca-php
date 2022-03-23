@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Tests\Feature;
+
 use App\Application\UseCase\PlaceOrder\PlaceOrder;
 use App\Application\UseCase\PlaceOrder\PlaceOrderInput;
 use App\Domain\Factory\RepositoryFactory;
@@ -7,6 +9,7 @@ use App\Infra\Database\Connection;
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Factory\DatabaseRepositoryFactory;
 use App\Infra\Factory\MemoryRepositoryFactory;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class PlaceOrderTest extends TestCase

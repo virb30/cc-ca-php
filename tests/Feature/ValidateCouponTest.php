@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Tests\Feature;
+
 use App\Application\UseCase\ValidateCoupon\ValidateCoupon;
 use App\Domain\Factory\RepositoryFactory;
 use App\Infra\Database\Connection;

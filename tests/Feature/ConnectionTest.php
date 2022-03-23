@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+namespace Tests\Feature;
+
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use PHPUnit\Framework\TestCase;
 
