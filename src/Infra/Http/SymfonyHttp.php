@@ -23,8 +23,8 @@ class SymfonyHttp implements Http
 
   public function route(string $method, string $url, callable $callback)
   {
-    $this->routes->add('books', new Route(
-      '/books',
+    $this->routes->add($url, new Route(
+      $url,
       ['handler' => function(Request $request) use($callback) {
         $result = $callback($request->query->all(), $request->request->all());
         $response = new Response(json_encode($result));
