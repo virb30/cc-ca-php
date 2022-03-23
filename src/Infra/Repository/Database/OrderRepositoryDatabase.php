@@ -85,22 +85,38 @@ class OrderRepositoryDatabase implements OrderRepository
   }
 
   /**
-   *
-   * @param Cpf $cpf
    * @return Order[]
    */
-  public function getByCpf(Cpf $cpf): array
+  public function getAll(): array
   {
-    $sql = "SELECT * FROM `order` WHERE `cpf` = ?";
-    $ordersData = $this->connection->query($sql, [$cpf]);
-
+    $ordersData = $this->connection->query("SELECT * FROM `order`", []);
     $orders = [];
-    foreach($ordersData as $orderData) {
-      array_push($orders, new Order(
+    foreach ($ordersData as $orderData){
+      if(empty($orderData)) throw new Exception('Order not found');
+      $order = new Order(
         $orderData['cpf'],
         new DateTime($orderData['issue_date']),
         $orderData['sequence']
-      ));
+      );
+      $orderItemsData = $this->connection->query("SELECT * FROM order_item where id_order = ?", [$orderData['id_order']]);
+      foreach($orderItemsData as $orderItemData) {
+        list($itemData) = $this->connection->query("SELECT * FROM item where id_item = ?", [$orderItemData['id_item']]);
+        $item = new Product(
+          $itemData['id_item'], 
+          $itemData['category'], 
+          $itemData['description'], 
+          (float) $orderItemData['price'],
+          new Dimension($itemData['height'], $itemData['width'], $itemData['length']),
+          $itemData['weight']
+        );
+        $order->addItem($item, $orderItemData['quantity']);
+      }
+      if($orderData['coupon']) {
+        list($couponData) = $this->connection->query("SELECT * FROM coupon where code = ?", [$orderData['coupon']]);
+        $coupon = new Coupon($couponData['code'], (float) $couponData['percentage'], new DateTime($couponData['expire_date']));
+        $order->applyCoupon($coupon);
+      }
+      array_push($orders, $order);
     }
 
     return $orders;

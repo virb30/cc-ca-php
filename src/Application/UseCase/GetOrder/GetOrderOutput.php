@@ -4,7 +4,7 @@ namespace App\Application\UseCase\GetOrder;
 
 use DateTimeInterface;
 
-class OrderOutput
+class GetOrderOutput
 {
   public function __construct(
     public readonly float $total,

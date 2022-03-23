@@ -14,10 +14,10 @@ class GetOrder
     $this->orderRepository = $repositoryFactory->createOrderRepository();
   }
 
-  public function execute(string $code): OrderOutput
+  public function execute(string $code): GetOrderOutput
   {
     $order = $this->orderRepository->getByCode($code);
-    $output = new OrderOutput(
+    $output = new GetOrderOutput(
       $order->getTotal(),
       $order->getCode(),
       $order->issueDate

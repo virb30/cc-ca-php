@@ -2,17 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\Application\UseCase\GetOrder\GetOrder;
+use App\Application\UseCase\GetOrders\GetOrders;
 use App\Application\UseCase\PlaceOrder\PlaceOrder;
 use App\Application\UseCase\PlaceOrder\PlaceOrderInput;
 use App\Domain\Factory\RepositoryFactory;
 use App\Infra\Database\Connection;
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Factory\DatabaseRepositoryFactory;
+use App\Infra\Repository\Memory\OrderRepositoryMemory;
+use App\Infra\Repository\Memory\ProductRepositoryMemory;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
-class GetOrderTest extends TestCase
+class GetOrdersTest extends TestCase
 {
   private Connection $connection;
   private RepositoryFactory $repositoryFactory;
@@ -26,7 +28,7 @@ class GetOrderTest extends TestCase
     $orderRepository->clean();
   }
 
-  public function testShouldGetOrderByCode()
+  public function testShouldGetOrdersList()
   {
     $placeOrder = new PlaceOrder($this->repositoryFactory);
     $input = new PlaceOrderInput(
@@ -40,9 +42,11 @@ class GetOrderTest extends TestCase
       issueDate: new DateTime("2021-03-01T10:00:00")
     );
     $placeOrder->execute($input);
-    $getOrder = new GetOrder($this->repositoryFactory);
-    $output = $getOrder->execute('202100000001');
-    $this->assertEquals(5132, $output->total);
+    $placeOrder->execute($input);
+    $placeOrder->execute($input);
+    $getOrders = new GetOrders($this->repositoryFactory);
+    $output = $getOrders->execute();
+    $this->assertCount(3, $output);
   }
 
   protected function tearDown(): void

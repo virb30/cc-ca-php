@@ -43,15 +43,10 @@ final class OrderRepositoryMemory implements OrderRepository
   }
 
   /**
-   * @param Cpf $cpf
    * @return Order[]
    */
-  public function getByCpf(Cpf $cpf): array
+  public function getAll(): array
   {
-    $orders = array_filter($this->orders, function(Order $order) use ($cpf) {
-      return (string) $order->cpf === (string) $cpf;
-    });
-
-    return $orders;
+    return $this->orders;
   }
 }

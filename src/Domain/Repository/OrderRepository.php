@@ -11,10 +11,8 @@ interface OrderRepository
   public function count(): int;
   public function clean(): void;
   public function getByCode(string $code): Order;
-
   /**
-   * @param Cpf $cpf
    * @return Order[]
    */
-  public function getByCpf(Cpf $cpf): array;
+  public function getAll(): array;
 }
