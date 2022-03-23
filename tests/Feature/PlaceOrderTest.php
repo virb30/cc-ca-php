@@ -21,8 +21,10 @@ class PlaceOrderTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    // $this->connection = new PdoMysqlConnectionAdapter();
-    $this->repositoryFactory = new MemoryRepositoryFactory();
+    $this->connection = new PdoMysqlConnectionAdapter();
+    $this->repositoryFactory = new DatabaseRepositoryFactory($this->connection);
+    $orderRepository = $this->repositoryFactory->createOrderRepository();
+    $orderRepository->clean();
   }
   public function testShouldPlaceOrder () 
   {

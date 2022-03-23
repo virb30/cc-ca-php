@@ -24,6 +24,11 @@ final class OrderRepositoryMemory implements OrderRepository
     return count($this->orders);
   }
 
+  public function clean(): void
+  {
+    $this->orders = [];
+  }
+
   public function getByCode(string $code): Order
   {
     $order = array_filter($this->orders, function($order) use ($code) {

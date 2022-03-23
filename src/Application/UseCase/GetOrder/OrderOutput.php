@@ -7,6 +7,7 @@ use DateTimeInterface;
 class OrderOutput
 {
   public function __construct(
+    public readonly float $total,
     public readonly string $code,
     public readonly DateTimeInterface $issueDate
   )

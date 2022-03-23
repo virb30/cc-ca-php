@@ -11,6 +11,7 @@ class ConnectionTest extends TestCase
   {
     $connection = new PdoMysqlConnectionAdapter();
     $items = $connection->query('select * from item', []);
+    $connection->close();
     $this->assertCount(3, $items);
   }
 }

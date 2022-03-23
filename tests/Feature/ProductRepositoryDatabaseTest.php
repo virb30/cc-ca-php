@@ -2,17 +2,32 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Repository\ProductRepository;
+use App\Infra\Database\Connection;
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Repository\Database\ProductRepositoryDatabase;
 use PHPUnit\Framework\TestCase;
 
 class ProductRepositoryDatabaseTest extends TestCase
 {
-  public function testShouldTestProductRepositoryDatabase()
+  private Connection $connection;
+  private ProductRepository $productRepository;
+
+  protected function setUp(): void
   {
-    $connection = new PdoMysqlConnectionAdapter();
-    $productRepository = new ProductRepositoryDatabase($connection);
-    $product = $productRepository->getById(1);
+    $this->connection = new PdoMysqlConnectionAdapter();
+    $this->productRepository = new ProductRepositoryDatabase($this->connection);
+  }
+
+  public function testShouldTestProductRepositoryDatabase()
+  {  
+    $product = $this->productRepository->getById(1);
     $this->assertEquals('Guitarra', $product->description);
+  }
+
+  protected function tearDown(): void
+  {
+    parent::tearDown();
+    $this->connection->close();
   }
 }
