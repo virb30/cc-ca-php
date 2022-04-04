@@ -10,6 +10,7 @@ use App\Domain\Repository\StockEntryRepository;
 use App\Infra\Repository\Memory\CouponRepositoryMemory;
 use App\Infra\Repository\Memory\OrderRepositoryMemory;
 use App\Infra\Repository\Memory\ProductRepositoryMemory;
+use App\Infra\Repository\Memory\StockEntryRepositoryMemory;
 
 class MemoryRepositoryFactory implements RepositoryFactory
 {

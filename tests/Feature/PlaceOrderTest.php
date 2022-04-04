@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Application\Handler\StockEntryHandler;
 use App\Application\UseCase\GetStock\GetStock;
 use App\Application\UseCase\PlaceOrder\PlaceOrder;
 use App\Application\UseCase\PlaceOrder\PlaceOrderInput;
@@ -9,6 +10,7 @@ use App\Domain\Factory\RepositoryFactory;
 use App\Infra\Database\Connection;
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Factory\DatabaseRepositoryFactory;
+use App\Infra\Mediator\Mediator;
 use DateTime;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -80,7 +82,9 @@ class PlaceOrderTest extends TestCase
 
   public function testShouldPlaceOrderAndWithdrawItemsFromStock () 
   {
-    $placeOrder = new PlaceOrder($this->repositoryFactory);
+    $mediator = new Mediator();
+    $mediator->register(new StockEntryHandler($this->repositoryFactory));
+    $placeOrder = new PlaceOrder($this->repositoryFactory, $mediator);
     $input = new PlaceOrderInput(
       cpf: "935.411.347-80",
       orderItems: [
