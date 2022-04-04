@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Domain\Entity;
+namespace App\Domain\Service;
+
+use App\Domain\Entity\Product;
 
 final class FreightCalculator
 {

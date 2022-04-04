@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Domain\Entity\Dimension;
-use App\Domain\Entity\FreightCalculator;
+use App\Domain\Service\FreightCalculator;
 use App\Domain\Entity\Product;
 use PHPUnit\Framework\TestCase;
 
