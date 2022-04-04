@@ -1,5 +1,5 @@
 create table `item` (
-  id_item BIGINT primary key,
+  id_item BIGINT primary key AUTO_INCREMENT,
   category TEXT,
   description TEXT,
   price DECIMAL,
@@ -70,7 +70,7 @@ values ('VALE20', 20, '2023-10-10T10:00:00');
 insert into `coupon` (code, percentage, expire_date)
 values ('VALE20_EXPIRED', 20, '2020-10-10T10:00:00');
 create table `order` (
-  id_order BIGINT PRIMARY KEY,
+  id_order BIGINT PRIMARY KEY AUTO_INCREMENT,
   coupon text,
   code text,
   cpf text,
@@ -85,4 +85,9 @@ create table `order_item` (
   price numeric,
   quantity integer,
   primary key (id_order, id_item)
+);
+create table `stock_entry` (
+  id_item integer,
+  operation text,
+  quantity integer
 );
