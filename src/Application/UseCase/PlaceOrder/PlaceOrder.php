@@ -3,10 +3,12 @@
 namespace App\Application\UseCase\PlaceOrder;
 
 use App\Domain\Entity\Order;
+use App\Domain\Entity\StockEntry;
 use App\Domain\Factory\RepositoryFactory;
 use App\Domain\Repository\CouponRepository;
 use App\Domain\Repository\OrderRepository;
 use App\Domain\Repository\ProductRepository;
+use App\Domain\Repository\StockEntryRepository;
 use Exception;
 
 final class PlaceOrder
@@ -14,12 +16,14 @@ final class PlaceOrder
   private ProductRepository $productRepository;
   private CouponRepository $couponRepository;
   private OrderRepository $orderRepository;
+  private StockEntryRepository $stockEntryRepository;
 
   public function __construct(readonly RepositoryFactory $repositoryFactory) 
   {
     $this->productRepository = $repositoryFactory->createProductRepository();
     $this->couponRepository = $repositoryFactory->createCouponRepository();
     $this->orderRepository = $repositoryFactory->createOrderRepository();
+    $this->stockEntryRepository = $repositoryFactory->createStockEntryRepository();
   }
 
   public function execute(PlaceOrderInput $input): PlaceOrderOutput
@@ -36,6 +40,9 @@ final class PlaceOrder
       $order->applyCoupon($coupon);
     }
     $this->orderRepository->save($order);
+    foreach($input->orderItems as $orderItem) {
+      $this->stockEntryRepository->save(new StockEntry($orderItem->idItem, 'out', $orderItem->quantity));
+    }
     $output = new PlaceOrderOutput($order->getCode(), $order->getTotal());
     return $output;
   }

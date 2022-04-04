@@ -47,6 +47,7 @@ class OrderRepositoryDatabase implements OrderRepository
 
   public function clean(): void
   {
+    $this->connection->query("DELETE FROM `stock_entry`", []);
     $this->connection->query("DELETE FROM `order_item`", []);
     $this->connection->query("DELETE FROM `order`", []);
   }

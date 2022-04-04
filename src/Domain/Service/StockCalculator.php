@@ -8,7 +8,7 @@ class StockCalculator
 {
   /**
    * @param StockEntry[] $stockEntries
-   * @return void
+   * @return int
    */
   public function calculate(array $stockEntries): int
   {

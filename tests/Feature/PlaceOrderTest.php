@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Application\UseCase\GetStock\GetStock;
 use App\Application\UseCase\PlaceOrder\PlaceOrder;
 use App\Application\UseCase\PlaceOrder\PlaceOrderInput;
 use App\Domain\Factory\RepositoryFactory;
 use App\Infra\Database\Connection;
 use App\Infra\Database\PdoMysqlConnectionAdapter;
 use App\Infra\Factory\DatabaseRepositoryFactory;
-use App\Infra\Factory\MemoryRepositoryFactory;
 use DateTime;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -76,5 +76,27 @@ class PlaceOrderTest extends TestCase
 
     $this->expectException(Exception::class);
     $placeOrder->execute($input);
+  }
+
+  public function testShouldPlaceOrderAndWithdrawItemsFromStock () 
+  {
+    $placeOrder = new PlaceOrder($this->repositoryFactory);
+    $input = new PlaceOrderInput(
+      cpf: "935.411.347-80",
+      orderItems: [
+        (object) ['idItem' => 1, 'quantity' => 1],
+        (object) ['idItem' => 2, 'quantity' => 1],
+        (object) ['idItem' => 3, 'quantity' => 3],
+      ],
+      coupon: "VALE20"
+    );
+    $placeOrder->execute($input);
+    $getStock = new GetStock($this->repositoryFactory);
+    $total1 = $getStock->execute(1);
+    $this->assertEquals(-1, $total1);
+    $total2 = $getStock->execute(2);
+    $this->assertEquals(-1, $total2);
+    $total3 = $getStock->execute(3);
+    $this->assertEquals(-3, $total3);
   }
 }
